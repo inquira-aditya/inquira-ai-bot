@@ -12,7 +12,7 @@ bot = telebot.TeleBot(BOT_TOKEN)
 
 # 🌐 1. RESEARCH FEATURE (Google Gemini AI)
 def ask_gemini(prompt):
-    url = f"https://googleapis.com{GEMINI_API_KEY}"
+    url = f"https://generativelanguage..."
     headers = {'Content-Type': 'application/json'}
     data = {
         "contents": [{
