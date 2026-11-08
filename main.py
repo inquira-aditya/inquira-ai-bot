@@ -6,7 +6,7 @@ import requests
 GEMINI_API_KEY = 'AQ.Ab8RN6L34JlUKvcwXRXvOjyp7hfi1-zhBEV2KHZdoH_KR43tQg'
 
 # ⚠️ TELEGRAM BOT TOKEN (Ise hum baad mein dalein ge jab restriction hategi)
-BOT_TOKEN = '9110746197:AAGtnkUta1T8JxN1RXe1kCVFes3Xtilq0gcmain.py'
+BOT_TOKEN = '9110746197:AAGtnkUta1T8JxN1RXe1kCVFes3Xtilq0gc'
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
