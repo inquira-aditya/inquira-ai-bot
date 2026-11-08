@@ -5,10 +5,10 @@ import threading
 import os
 
 # ⚠️ NAYI GOOGLE API KEY YAHAN DALEIN (Single quotes ke andar)
-GEMINI_API_KEY = 'AQ.Ab8RN6LgdSu23IZ-ehcb-Yscx72gV05xP3ZwMel11RH2LGOxWA'
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # ⚠️ TELEGRAM BOT TOKEN YAHAN DALEIN
-BOT_TOKEN = '9110746197:AAGtnkUta1T8JxN1RXe1kCVFes3Xti1q0gc'
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
