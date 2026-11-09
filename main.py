@@ -27,8 +27,9 @@ def ask_gemini(prompt):
             result = response.json()
             return result['candidates'][0]['content']['parts'][0]['text']
         else:
-            print(response.status_code, response.text)
-            return "Sorry, Gemini AI se connect karne mein dikkat aa rahi hai."
+            print(response.status_code, response.text, flush=True)
+            return f"Gemini error {response.status_code}: {response.text[:300]}"
+            
     except Exception as e:
         return f"Error: {str(e)}"
 
