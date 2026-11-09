@@ -67,10 +67,10 @@ if __name__ == "__main__":
     t = threading.Thread(target=run_flask)
     t.start()
     print("🚀 Aapka AI Bot active ho gaya hai!")
-        while True:
+    while True:
         try:
             bot.infinity_polling(skip_pending=True, timeout=20, long_polling_timeout=20)
         except Exception as e:
             print("Polling error:", e, flush=True)
-            time.sleep(10)
+            time.sleep(10)    
     
