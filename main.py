@@ -3,7 +3,7 @@ import requests
 from flask import Flask
 import threading
 import os
-
+import time
 # ⚠️ NAYI GOOGLE API KEY YAHAN DALEIN (Single quotes ke andar)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
@@ -13,25 +13,24 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 bot = telebot.TeleBot(BOT_TOKEN)
 
 # 🌐 1. RESEARCH FEATURE (Google Gemini AI URL 100% Correct)
+
+
 def ask_gemini(prompt):
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key={GEMINI_API_KEY}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={GEMINI_API_KEY}"
     headers = {'Content-Type': 'application/json'}
-    data = {
-        "contents": [{
-            "parts": [{"text": prompt + " (Please reply in brief and helpful Hindi or English as asked)"}]
-        }]
-    }
-    try:
-        response = requests.post(url, headers=headers, json=data)
-        if response.status_code == 200:
-            result = response.json()
-            return result['candidates'][0]['content']['parts'][0]['text']
-        else:
-            print(response.status_code, response.text, flush=True)
-            return f"Gemini error {response.status_code}: {response.text[:300]}"
-            
-    except Exception as e:
-        return f"Error: {str(e)}"
+    data = {"contents": [{"parts": [{"text": prompt + " (Please reply in brief and helpful Hindi or English as asked)"}]}]}
+    for attempt in range(3):
+        try:
+            response = requests.post(url, headers=headers, json=data, timeout=30)
+            if response.status_code == 200:
+                return response.json()['candidates'][0]['content']['parts'][0]['text']
+            if response.status_code in (429, 500, 503):
+                time.sleep(3)
+                continue
+            return f"Gemini error {response.status_code}"
+        except Exception as e:
+            time.sleep(3)
+    return "Gemini abhi busy hai, 1 minute baad dobara try karo."
 
 # 📩 Telegram Messages ko Handle karna
 @bot.message_handler(func=lambda message: True)
