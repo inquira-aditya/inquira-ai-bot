@@ -16,20 +16,22 @@ bot = telebot.TeleBot(BOT_TOKEN)
 
 
 def ask_gemini(prompt):
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key={GEMINI_API_KEY}"
+    models = ["gemini-flash-latest", "gemini-flash-lite-latest"]
     headers = {'Content-Type': 'application/json'}
     data = {"contents": [{"parts": [{"text": prompt + " (Please reply in brief and helpful Hindi or English as asked)"}]}]}
-    for attempt in range(3):
-        try:
-            response = requests.post(url, headers=headers, json=data, timeout=30)
-            if response.status_code == 200:
-                return response.json()['candidates'][0]['content']['parts'][0]['text']
-            if response.status_code in (429, 500, 503):
-                time.sleep(3)
-                continue
-            return f"Gemini error {response.status_code}"
-        except Exception as e:
-            time.sleep(3)
+    for model in models:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={GEMINI_API_KEY}"
+        for attempt in range(2):
+            try:
+                response = requests.post(url, headers=headers, json=data, timeout=30)
+                if response.status_code == 200:
+                    return response.json()['candidates'][0]['content']['parts'][0]['text']
+                if response.status_code in (429, 500, 503):
+                    time.sleep(2)
+                    continue
+                break
+            except Exception as e:
+                time.sleep(2)
     return "Gemini abhi busy hai, 1 minute baad dobara try karo."
 
 # 📩 Telegram Messages ko Handle karna
